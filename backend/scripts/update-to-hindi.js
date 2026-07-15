@@ -5,7 +5,7 @@ const Result = require('../models/Result');
 const AdmitCard = require('../models/AdmitCard');
 require('dotenv').config();
 
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/sarkariyojna';
+const mongoURI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/sarkariyojna';
 
 async function updateToHindi() {
   try {
