@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="hi-IN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>State Wise Sarkari Yojana - राज्यवार सरकारी योजनाएं | All Sarkari Yojana</title>
+  <meta name="description" content="राज्यवार सरकारी योजनाएं देखें। केंद्र सरकार, उत्तर प्रदेश, मध्य प्रदेश और आगे सभी राज्यों की योजनाओं के लिए directory structure।" />
+  <link rel="canonical" href="https://allsarkariyojana.in/state/" />
+  <link rel="icon" type="image/png" href="../images/app-icon.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<div class="disclaimer-banner"><div class="container"><p>⚠️ यह निजी informational website है। योजना आवेदन के लिए official government portal ही use करें।</p></div></div>
+<header class="site-header"><div class="container"><nav class="navbar">
+  <a href="../index.html" class="nav-brand"><img src="../images/app-icon.png" alt="All Sarkari Yojana" width="42" height="42" /><span>All Sarkari Yojana<span class="brand-sub">सरकारी योजनाओं की जानकारी</span></span></a>
+  <ul class="nav-links"><li><a href="../index.html">होम</a></li><li><a href="../category/all-yojana.html">सभी योजनाएं</a></li><li><a href="../search.html">खोजें</a></li><li><a href="index.html">राज्य</a></li></ul>
+  <div class="nav-cta"><a href="https://play.google.com/store/apps/details?id=com.skywave.allsarkariyojna" target="_blank" rel="noopener" class="btn btn-accent btn-sm">App</a></div>
+  <button class="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+</nav></div></header>
+
+<div class="page-breadcrumb"><div class="container"><nav class="breadcrumb"><a href="../index.html">होम</a><span class="sep">›</span><span>राज्यवार योजनाएं</span></nav></div></div>
+
+<section class="category-hero"><div class="container">
+  <span class="cat-emoji">🗺️</span>
+  <h1>राज्यवार सरकारी योजनाएं</h1>
+  <p>केंद्र और राज्य सरकार की योजनाओं को state-wise browse करें। आगे हर राज्य का अपना page इसी structure से बनेगा।</p>
+</div></section>
+
+<main class="section" data-scheme-directory>
+  <div class="container">
+    <div class="state-link-grid" id="state-link-grid"></div>
+    <div class="section-header mt-4">
+      <h2>सभी उपलब्ध योजनाएं</h2>
+      <p>नीचे मौजूदा directory data से योजनाएं दिख रही हैं।</p>
+    </div>
+    <div class="directory-tools">
+      <input type="search" id="directory-search" placeholder="योजना खोजें..." aria-label="योजना खोजें" />
+      <select id="directory-state" aria-label="राज्य चुनें"></select>
+      <select id="directory-category" aria-label="श्रेणी चुनें"></select>
+    </div>
+    <div class="directory-summary"><strong id="directory-count">0 योजना मिली</strong><span>State data file से render हो रहा है।</span></div>
+    <div class="schemes-grid" id="directory-grid"></div>
+    <p class="directory-empty" id="directory-empty" hidden>कोई योजना नहीं मिली।</p>
+  </div>
+</main>
+
+<footer class="site-footer"><div class="container"><div class="footer-bottom"><p>© 2024 All Sarkari Yojana | SKYWAVE ERA TECHNOLOGY</p></div></div></footer>
+<button id="back-to-top" aria-label="Back to top" style="position:fixed;bottom:24px;right:24px;width:44px;height:44px;background:var(--primary);color:white;border:none;border-radius:50%;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999;">↑</button>
+<script src="../data/schemes.js"></script>
+<script src="../js/scheme-directory.js" defer></script>
+<script src="../js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+}
+
+model SystemSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  hindiName   String?
+  type        String   @default("scheme")
+  schemes     Scheme[]
+  createdAt   DateTime @default(now())
+}
+
+model State {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  hindiName String?
+  schemes   Scheme[]
+  districts District[]
+  createdAt DateTime @default(now())
+}
+
+model District {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  hindiName String?
+  stateId   String
+  state     State    @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model Scheme {
+  id                 String    @id @default(cuid())
+  slug               String    @unique
+  title              String
+  hindiName          String?
+  shortDesc          String?  
+  content            String?  
+  eligibility        String?  
+  benefits           String?  
+  documents          String?  
+  officialLinks      String?   // Can store JSON or HTML
+  applicationProcess String?  
+  images             String?   // JSON array of image URLs
+  categoryId         String?
+  category           Category? @relation(fields: [categoryId], references: [id])
+  stateId            String?
+  state              State?    @relation(fields: [stateId], references: [id])
+  status             String    @default("PUBLISHED") // PUBLISHED, DRAFT
+  seoTitle           String?   
+  seoDesc            String?  
+  keywords           String?  
+  featured           Boolean   @default(false)
+  trending           Boolean   @default(false)
+  popular            Boolean   @default(false)
+  priorityOrder      Int       @default(0)
+  views              Int       @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model Job {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String  
+  status      String   @default("PUBLISHED")
+  seoTitle    String?   
+  seoDesc     String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Result {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String  
+  status      String   @default("PUBLISHED")
+  seoTitle    String?   
+  seoDesc     String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AdmitCard {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String  
+  status      String   @default("PUBLISHED")
+  seoTitle    String?   
+  seoDesc     String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Scholarship {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String  
+  status      String   @default("PUBLISHED")
+  seoTitle    String?   
+  seoDesc     String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model News {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String  
+  status      String   @default("PUBLISHED")
+  seoTitle    String?   
+  seoDesc     String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Blog {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String  
+  status      String   @default("PUBLISHED")
+  seoTitle    String?   
+  seoDesc     String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Faq {
+  id          String   @id @default(cuid())
+  question    String  
+  answer      String  
+  status      String   @default("PUBLISHED")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Page {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String  
+  status      String   @default("PUBLISHED")
+  seoTitle    String?   
+  seoDesc     String? 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Announcement {
+  id          String   @id @default(cuid())
+  title       String
+  link        String?
+  status      String   @default("PUBLISHED")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Menu {
+  id          String   @id @default(cuid())
+  name        String   @unique // e.g. "Header", "Footer"
+  items       String   // JSON array of items
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Redirect {
+  id          String   @id @default(cuid())
+  source      String   @unique
+  destination String
+  type        Int      @default(301) // 301 or 302
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NotificationHistory {
+  id          String   @id @default(cuid())
+  title       String
+  message     String  
+  target      String // All, Category, State, Topic
+  status      String // SUCCESS, FAILED
+  provider    String // Firebase, OneSignal
+  createdAt   DateTime @default(now())
+}
+
+model Banner {
+  id          String   @id @default(cuid())
+  title       String
+  imageUrl    String
+  link        String?
+  position    String   @default("homepage") // homepage, popup, announcement
+  status      String   @default("PUBLISHED")
+  priority    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Advertisement {
+  id          String   @id @default(cuid())
+  title       String
+  type        String   @default("banner") // banner, native, interstitial
+  imageUrl    String?
+  scriptCode  String? 
+  link        String?
+  position    String   @default("sidebar") // sidebar, in_content, header
+  status      String   @default("PUBLISHED")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Feedback {
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  message     String  
+  type        String   @default("feedback") // feedback, suggestion, bug
+  status      String   @default("NEW") // NEW, REVIEWED, RESOLVED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  subject     String?
+  message     String  
+  status      String   @default("NEW") // NEW, REPLIED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

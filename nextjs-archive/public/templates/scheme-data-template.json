@@ -1,0 +1,21 @@
+{
+  "id": "scheme-url-slug",
+  "name": "English/Common Scheme Name",
+  "hindiName": "हिंदी योजना नाम",
+  "state": "केंद्र सरकार / राज्य का नाम",
+  "stateSlug": "central-schemes",
+  "category": "किसान / महिला / शिक्षा / रोजगार",
+  "categorySlug": "kisan-yojana",
+  "summary": "एक लाइन में योजना का आसान वर्णन।",
+  "officialUrl": "https://official-government-portal.example",
+  "pageUrl": "../yojana/scheme-url-slug.html",
+  "keywords": "search keywords हिंदी english alternate names",
+  "detailSections": {
+    "objective": "योजना का उद्देश्य",
+    "benefits": ["लाभ 1", "लाभ 2"],
+    "eligibility": ["पात्रता 1", "पात्रता 2"],
+    "documents": ["दस्तावेज 1", "दस्तावेज 2"],
+    "howToApply": ["step 1", "step 2"],
+    "helpline": "यदि उपलब्ध हो"
+  }
+}

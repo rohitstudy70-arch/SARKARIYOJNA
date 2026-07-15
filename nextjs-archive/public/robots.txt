@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow build/generated files if any
+Disallow: /build/
+
+# Sitemap location
+Sitemap: https://allsarkariyojana.in/sitemap.xml

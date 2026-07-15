@@ -1,0 +1,42 @@
+{
+  "name": "All Sarkari Yojana",
+  "short_name": "Sarkari Yojana",
+  "description": "26+ सरकारी योजनाओं की जानकारी हिंदी में — PM Kisan, Ayushman Bharat, PM Awas Yojana और बहुत कुछ।",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F8F6",
+  "theme_color": "#052A78",
+  "lang": "hi-IN",
+  "categories": ["government", "education", "utilities"],
+  "icons": [
+    {
+      "src": "/images/app-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "सभी योजनाएं",
+      "short_name": "सभी योजनाएं",
+      "description": "All 26+ schemes",
+      "url": "/category/all-yojana.html",
+      "icons": [{ "src": "/images/app-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "PM Kisan",
+      "short_name": "PM Kisan",
+      "description": "PM Kisan Samman Nidhi Yojana",
+      "url": "/yojana/pm-kisan-samman-nidhi.html",
+      "icons": [{ "src": "/images/app-icon.png", "sizes": "96x96" }]
+    }
+  ]
+}
