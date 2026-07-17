@@ -213,18 +213,44 @@ export default function Home() {
       <section ref={heroRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         {activeBanner ? (
           <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[340px] md:h-[450px] bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900">
-            <img 
-              src={activeBanner.imageUrl} 
-              alt={activeBanner.title} 
-              className="hero-banner-image absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 hover:scale-105 transition-transform duration-[8s]"
-            />
+            {activeBanner.link ? (
+              <Link to={activeBanner.link}>
+                <img 
+                  src={activeBanner.imageUrl} 
+                  alt={activeBanner.title} 
+                  className="hero-banner-image absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 hover:scale-105 transition-transform duration-[8s] cursor-pointer"
+                />
+              </Link>
+            ) : (
+              <img 
+                src={activeBanner.imageUrl} 
+                alt={activeBanner.title} 
+                className="hero-banner-image absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60 hover:scale-105 transition-transform duration-[8s]"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex flex-col justify-end p-6 sm:p-12">
               <div className="hero-banner-content max-w-3xl">
-                <span className="bg-blue-600 text-white font-extrabold text-[11px] px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block shadow-sm">
-                  {language === 'en' ? 'Trending Updates' : 'ट्रेंडिंग अपडेट्स'}
-                </span>
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <span className="bg-blue-600 text-white font-extrabold text-[11px] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block shadow-sm">
+                    {language === 'en' ? 'Trending Updates' : 'ट्रेंडिंग अपडेट्स'}
+                  </span>
+                  {activeBanner.link && (
+                    <Link 
+                      to={activeBanner.link}
+                      className="bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm border border-white/10 font-extrabold text-[11px] px-3.5 py-1.5 rounded-full transition flex items-center gap-1"
+                    >
+                      {language === 'en' ? 'Know More' : 'अधिक जानें'} &rarr;
+                    </Link>
+                  )}
+                </div>
                 <h1 className="hero-title text-3xl sm:text-5xl font-black text-white leading-tight mb-4 tracking-tight">
-                  {activeBanner.title}
+                  {activeBanner.link ? (
+                    <Link to={activeBanner.link} className="hover:underline">
+                      {activeBanner.title}
+                    </Link>
+                  ) : (
+                    activeBanner.title
+                  )}
                 </h1>
                 <p className="hero-desc text-slate-200 text-sm sm:text-lg mb-6 leading-relaxed opacity-90 max-w-2xl font-light">
                   {language === 'en' 
