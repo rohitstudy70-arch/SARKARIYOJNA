@@ -1,13 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Flame, Award, Eye, ArrowRight, ArrowUpRight, AwardIcon } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import api from '../utils/api';
+import { LanguageContext } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
+  const { language, t } = useContext(LanguageContext);
   const [data, setData] = useState({
     banners: [], featured: [], trending: [], popular: [], categories: [], states: [], announcements: []
   });
@@ -15,6 +17,14 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [currentBannerIdx, setCurrentBannerIdx] = useState(0);
   const navigate = useNavigate();
+
+  const getSchemeTitle = (scheme) => {
+    return (language === 'hi' && scheme.hindiName) ? scheme.hindiName : scheme.title;
+  };
+
+  const getSchemeSubtitle = (scheme) => {
+    return (language === 'hi' && scheme.hindiName) ? scheme.title : scheme.hindiName;
+  };
 
   const heroRef = useRef(null);
   const cardsRef = useRef(null);
@@ -211,13 +221,15 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex flex-col justify-end p-6 sm:p-12">
               <div className="hero-banner-content max-w-3xl">
                 <span className="bg-blue-600 text-white font-extrabold text-[11px] px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-4 inline-block shadow-sm">
-                  Trending Updates
+                  {language === 'en' ? 'Trending Updates' : 'ट्रेंडिंग अपडेट्स'}
                 </span>
                 <h1 className="hero-title text-3xl sm:text-5xl font-black text-white leading-tight mb-4 tracking-tight">
                   {activeBanner.title}
                 </h1>
                 <p className="hero-desc text-slate-200 text-sm sm:text-lg mb-6 leading-relaxed opacity-90 max-w-2xl font-light">
-                  Search & find all Indian state and central government scheme benefits, documents required, and check eligibility inside.
+                  {language === 'en' 
+                    ? 'Search & find all Indian state and central government scheme benefits, documents required, and check eligibility inside.'
+                    : 'सभी भारतीय राज्य और केंद्र सरकार की योजना के लाभों, आवश्यक दस्तावेजों की खोज करें और पात्रता की जांच करें।'}
                 </p>
                 
                 {/* Search Bar inside Hero */}
@@ -227,7 +239,7 @@ export default function Home() {
                   </div>
                   <input
                     type="text"
-                    placeholder="Search yojana (e.g. Kisan, Awas, pension)..."
+                    placeholder={t('searchPlaceholder')}
                     value={searchVal}
                     onChange={(e) => setSearchVal(e.target.value)}
                     className="w-full px-3 py-2 text-sm text-gray-800 focus:outline-none placeholder-gray-400 font-medium"
@@ -265,17 +277,25 @@ export default function Home() {
           </div>
         ) : (
           <div className="bg-gradient-to-r from-blue-700 to-indigo-800 rounded-3xl p-12 text-white shadow-xl relative overflow-hidden">
-            <h1 className="hero-title text-4xl font-extrabold mb-4">Find All Government Schemes</h1>
-            <p className="hero-desc text-blue-100 mb-6 max-w-2xl">Read detailed descriptions, documents required, eligibility criterion and step-by-step application instructions.</p>
+            <h1 className="hero-title text-4xl font-extrabold mb-4">
+              {language === 'en' ? 'Find All Government Schemes' : 'सभी सरकारी योजनाएं खोजें'}
+            </h1>
+            <p className="hero-desc text-blue-100 mb-6 max-w-2xl">
+              {language === 'en' 
+                ? 'Read detailed descriptions, documents required, eligibility criterion and step-by-step application instructions.'
+                : 'विस्तृत विवरण, आवश्यक दस्तावेज, पात्रता मानदंड और आवेदन के चरणों की जानकारी प्राप्त करें।'}
+            </p>
             <form onSubmit={handleSearchSubmit} className="search-bar flex items-center bg-white p-1 rounded-2xl shadow-lg max-w-lg">
               <input 
                 type="text" 
-                placeholder="Search schemes..." 
+                placeholder={t('searchPlaceholder')}
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
                 className="w-full px-4 py-2 text-gray-800 focus:outline-none" 
               />
-              <button type="submit" className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold">Search</button>
+              <button type="submit" className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold">
+                {t('searchButton')}
+              </button>
             </form>
           </div>
         )}
@@ -287,9 +307,11 @@ export default function Home() {
           <div>
             <h2 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
               <span className="w-1.5 h-7 rounded-full bg-blue-600 inline-block"></span>
-              Browse Categories
+              {language === 'en' ? 'Browse Categories' : 'श्रेणियां देखें'}
             </h2>
-            <p className="text-gray-500 text-sm mt-1">Explore yojanas categorized by their functional sectors</p>
+            <p className="text-gray-500 text-sm mt-1">
+              {language === 'en' ? 'Explore yojanas categorized by their functional sectors' : 'विभिन्न क्षेत्रों के अनुसार वर्गीकृत योजनाओं का पता लगाएं'}
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
@@ -300,10 +322,13 @@ export default function Home() {
               className="category-card bg-white p-5 rounded-2xl shadow-sm border border-gray-100/80 hover:border-blue-400 hover:shadow-lg transition-all duration-300 text-center flex flex-col items-center group cursor-pointer"
             >
               <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl mb-4 flex items-center justify-center font-bold text-xl group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                {cat.name.charAt(0)}
+                {(language === 'hi' && cat.hindiName ? cat.hindiName : cat.name).charAt(0)}
               </div>
-              <h3 className="font-semibold text-gray-800 group-hover:text-blue-600 transition text-sm">{cat.name}</h3>
-              {cat.hindiName && <span className="text-[10px] text-gray-400 mt-1 font-medium">{cat.hindiName}</span>}
+              <h3 className="font-semibold text-gray-800 group-hover:text-blue-600 transition text-sm">
+                {language === 'hi' && cat.hindiName ? cat.hindiName : cat.name}
+              </h3>
+              {cat.hindiName && language === 'en' && <span className="text-[10px] text-gray-400 mt-1 font-medium">{cat.hindiName}</span>}
+              {cat.hindiName && language === 'hi' && <span className="text-[10px] text-gray-400 mt-1 font-medium">{cat.name}</span>}
             </Link>
           ))}
         </div>
@@ -315,12 +340,14 @@ export default function Home() {
           <div>
             <h2 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
               <span className="w-1.5 h-7 rounded-full bg-emerald-500 inline-block"></span>
-              Featured Schemes
+              {language === 'en' ? 'Featured Schemes' : 'विशेष योजनाएं'}
             </h2>
-            <p className="text-gray-500 text-sm mt-1">Recommended central and state programs</p>
+            <p className="text-gray-500 text-sm mt-1">
+              {language === 'en' ? 'Recommended central and state programs' : 'केंद्र और राज्य सरकार की अनुशंसित योजनाएं'}
+            </p>
           </div>
           <Link to="/schemes" className="text-blue-600 text-sm font-semibold hover:underline inline-flex items-center gap-1">
-            View All <ArrowRight size={14} />
+            {language === 'en' ? 'View All' : 'सभी देखें'} <ArrowRight size={14} />
           </Link>
         </div>
         
@@ -333,19 +360,19 @@ export default function Home() {
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <span className="text-[10px] font-extrabold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">
-                    {scheme.category?.name || 'General'}
+                    {language === 'hi' && scheme.category?.hindiName ? scheme.category.hindiName : (scheme.category?.name || 'General')}
                   </span>
                   {scheme.state && (
                     <span className="text-[10px] font-extrabold text-amber-600 bg-amber-50 px-3 py-1 rounded-full uppercase tracking-wider">
-                      {scheme.state.name}
+                      {language === 'hi' && scheme.state.hindiName ? scheme.state.hindiName : scheme.state.name}
                     </span>
                   )}
                 </div>
                 <h3 className="text-lg font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors duration-200 leading-snug">
-                  {scheme.title}
+                  {getSchemeTitle(scheme)}
                 </h3>
-                {scheme.hindiName && (
-                  <p className="text-xs text-gray-500 mb-3 font-medium font-hindi">{scheme.hindiName}</p>
+                {getSchemeSubtitle(scheme) && (
+                  <p className="text-xs text-gray-500 mb-3 font-medium font-hindi">{getSchemeSubtitle(scheme)}</p>
                 )}
                 <p className="text-gray-500 text-xs line-clamp-3 leading-relaxed">
                   {scheme.shortDesc}
@@ -353,7 +380,7 @@ export default function Home() {
               </div>
               <div className="px-6 py-4 bg-gray-50 border-t border-gray-100/60 flex justify-between items-center text-xs font-semibold text-gray-500 group-hover:bg-blue-50 group-hover:text-blue-700 transition-all duration-200">
                 <Link to={`/yojana/${scheme.slug}`} className="w-full flex justify-between items-center">
-                  <span>View Details</span>
+                  <span>{language === 'en' ? 'View Details' : 'विवरण देखें'}</span>
                   <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
                 </Link>
               </div>
@@ -369,7 +396,7 @@ export default function Home() {
         <div className="trending-section-col">
           <h2 className="text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2 mb-6">
             <Flame className="text-orange-500" fill="orange" size={20} />
-            Trending Schemes
+            {t('trendingSchemes')}
           </h2>
           <div className="space-y-4">
             {data.trending.slice(0, 5).map((scheme, idx) => (
@@ -383,7 +410,7 @@ export default function Home() {
                 </span>
                 <div>
                   <h3 className="font-bold text-gray-800 text-sm group-hover:text-orange-600 transition leading-snug">
-                    {scheme.title}
+                    {getSchemeTitle(scheme)}
                   </h3>
                   <p className="text-xs text-gray-400 line-clamp-1 mt-1">{scheme.shortDesc}</p>
                 </div>
@@ -396,7 +423,7 @@ export default function Home() {
         <div className="popular-section-col">
           <h2 className="text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2 mb-6">
             <Award className="text-blue-500" size={20} />
-            Popular Initiatives
+            {t('popularInitiatives')}
           </h2>
           <div className="space-y-4">
             {data.popular.slice(0, 5).map((scheme, idx) => (
@@ -410,7 +437,7 @@ export default function Home() {
                 </span>
                 <div>
                   <h3 className="font-bold text-gray-800 text-sm group-hover:text-blue-600 transition leading-snug">
-                    {scheme.title}
+                    {getSchemeTitle(scheme)}
                   </h3>
                   <p className="text-xs text-gray-400 line-clamp-1 mt-1">{scheme.shortDesc}</p>
                 </div>
@@ -425,9 +452,9 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-            Latest Updates & Naukri Portal
+            {t('naukriPortalTitle')}
           </h2>
-          <p className="text-slate-500 text-sm mt-2">Check latest exam results, admit cards, answer keys, syllabus and jobs in one place</p>
+          <p className="text-slate-500 text-sm mt-2">{t('naukriPortalDesc')}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -435,8 +462,8 @@ export default function Home() {
           {/* Column 1: Latest Jobs */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
-              <span>Latest Jobs</span>
-              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">New</span>
+              <span>{t('latestJobs')}</span>
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">{t('newTag')}</span>
             </div>
             <div className="p-4 flex-1 overflow-y-auto space-y-3 divide-y divide-slate-50">
               {data.jobs && data.jobs.length > 0 ? (
@@ -459,8 +486,8 @@ export default function Home() {
           {/* Column 2: Admit Cards */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-purple-600 to-violet-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
-              <span>Admit Cards</span>
-              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Out</span>
+              <span>{t('admitCards')}</span>
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">{t('outTag')}</span>
             </div>
             <div className="p-4 flex-1 overflow-y-auto space-y-3 divide-y divide-slate-50">
               {data.admitCards && data.admitCards.length > 0 ? (
@@ -483,8 +510,8 @@ export default function Home() {
           {/* Column 3: Results */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
-              <span>Results</span>
-              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Live</span>
+              <span>{t('results')}</span>
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">{t('liveTag')}</span>
             </div>
             <div className="p-4 flex-1 overflow-y-auto space-y-3 divide-y divide-slate-50">
               {data.results && data.results.length > 0 ? (
@@ -507,8 +534,8 @@ export default function Home() {
           {/* Column 4: Answer Keys */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-amber-600 to-orange-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
-              <span>Answer Keys</span>
-              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Keys</span>
+              <span>{t('answerKeys')}</span>
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">{t('keysTag')}</span>
             </div>
             <div className="p-4 flex-1 overflow-y-auto space-y-3 divide-y divide-slate-50">
               {data.answerKeys && data.answerKeys.length > 0 ? (
@@ -531,8 +558,8 @@ export default function Home() {
           {/* Column 5: Syllabus */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-teal-600 to-cyan-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
-              <span>Syllabus</span>
-              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Exam</span>
+              <span>{t('syllabus')}</span>
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">{t('examTag')}</span>
             </div>
             <div className="p-4 flex-1 overflow-y-auto space-y-3 divide-y divide-slate-50">
               {data.syllabus && data.syllabus.length > 0 ? (
@@ -555,8 +582,8 @@ export default function Home() {
           {/* Column 6: Admissions */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-rose-600 to-pink-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
-              <span>Admissions</span>
-              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Apply</span>
+              <span>{t('admissions')}</span>
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">{t('applyTag')}</span>
             </div>
             <div className="p-4 flex-1 overflow-y-auto space-y-3 divide-y divide-slate-50">
               {data.admissions && data.admissions.length > 0 ? (
@@ -579,8 +606,8 @@ export default function Home() {
           {/* Column 7: Document Verification */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-indigo-600 to-blue-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
-              <span>Certificates</span>
-              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Docs</span>
+              <span>{t('documents')}</span>
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">{t('docsTag')}</span>
             </div>
             <div className="p-4 flex-1 overflow-y-auto space-y-3 divide-y divide-slate-50">
               {data.documents && data.documents.length > 0 ? (
@@ -603,8 +630,8 @@ export default function Home() {
           {/* Column 8: Important Alerts */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-red-600 to-rose-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
-              <span>Important Notices</span>
-              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Alert</span>
+              <span>{t('alerts')}</span>
+              <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">{t('alertTag')}</span>
             </div>
             <div className="p-4 flex-1 overflow-y-auto space-y-3 divide-y divide-slate-50">
               {data.announcements && data.announcements.length > 0 ? (
@@ -634,10 +661,8 @@ export default function Home() {
       {/* Central/State Toggle section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
         <div className="bg-gradient-to-br from-slate-900 to-indigo-950 p-8 sm:p-12 rounded-3xl shadow-xl text-white relative overflow-hidden text-center max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-black mb-3">Browse Schemes State-Wise</h2>
-          <p className="text-slate-300 text-sm sm:text-base max-w-lg mx-auto mb-8 font-light">
-            Check local region benefits. Almost all Indian states run dedicated financial assistance, farmer support, and educational programs.
-          </p>
+          <h2 className="text-2xl sm:text-3xl font-black mb-3">{t('browseStateWise')}</h2>
+          <p className="text-slate-300 text-sm sm:text-base max-w-lg mx-auto mb-8 font-light">{t('stateWiseDesc')}</p>
           <div className="flex flex-wrap justify-center gap-3">
             {data.states.map((st) => (
               <Link 
@@ -645,7 +670,7 @@ export default function Home() {
                 to={`/state/${st.slug}`} 
                 className="bg-white/10 hover:bg-white text-white hover:text-slate-900 font-semibold px-4 py-2 rounded-xl text-xs transition duration-200 border border-white/10 hover:border-transparent state-badge-item"
               >
-                {st.name} {st.hindiName ? `(${st.hindiName})` : ''}
+                {language === 'hi' && st.hindiName ? st.hindiName : st.name}
               </Link>
             ))}
           </div>
