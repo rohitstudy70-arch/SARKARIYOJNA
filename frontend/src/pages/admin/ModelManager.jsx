@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Edit2, Trash2, X, Check, FileText } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Check, FileText, Upload } from 'lucide-react';
 import api from '../../utils/api';
 
 export default function ModelManager({ modelName, title, fields }) {
@@ -165,7 +165,51 @@ export default function ModelManager({ modelName, title, fields }) {
                     <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">
                       {f.label} {f.required && <span className="text-red-500">*</span>}
                     </label>
-                    {f.type === 'select' ? (
+                    {f.type === 'image' ? (
+                      <div className="space-y-2">
+                        <input
+                          required={f.required}
+                          type="text"
+                          name={f.name}
+                          value={formData[f.name] || ''}
+                          onChange={handleChange}
+                          placeholder={f.placeholder || 'https://example.com/image.jpg'}
+                          className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-white font-medium placeholder-slate-700 transition"
+                        />
+                        <div className="flex items-center gap-3">
+                          <label className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-3.5 py-2.5 rounded-lg transition flex items-center gap-1.5 shadow-md uppercase tracking-wider">
+                            <Upload size={12} />
+                            Upload Image File
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={async (e) => {
+                                const file = e.target.files[0];
+                                if (!file) return;
+                                const uploadData = new FormData();
+                                uploadData.append('image', file);
+                                try {
+                                  setMsg('Uploading image, please wait...');
+                                  const res = await api.post('/api/v1/admin/upload', uploadData, {
+                                    headers: { 'Content-Type': 'multipart/form-data' }
+                                  });
+                                  if (res.data.success && res.data.url) {
+                                    setFormData(prev => ({ ...prev, [f.name]: res.data.url }));
+                                    setMsg('Image uploaded successfully!');
+                                    setTimeout(() => setMsg(''), 3000);
+                                  }
+                                } catch (err) {
+                                  console.error('Failed to upload file:', err);
+                                  setMsg('Upload failed: ' + (err.response?.data?.error || err.message));
+                                }
+                              }}
+                              className="hidden"
+                            />
+                          </label>
+                          <span className="text-[10px] text-slate-500 font-medium">Or choose a file from your device</span>
+                        </div>
+                      </div>
+                    ) : f.type === 'select' ? (
                       <select
                         name={f.name}
                         value={formData[f.name] || ''}

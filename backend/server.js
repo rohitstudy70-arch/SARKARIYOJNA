@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
+const path = require('path');
+
 // Initialize app
 const app = express();
 
@@ -12,10 +14,12 @@ connectDB();
 // Middlewares
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/v1/auth', require('./routes/auth'));
 app.use('/api/v1/admin', require('./routes/admin'));
+app.use('/api/v1/admin/upload', require('./routes/upload'));
 app.use('/api/v1/public', require('./routes/public'));
 
 // Health check

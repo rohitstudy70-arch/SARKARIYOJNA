@@ -158,7 +158,7 @@ const documentFields = [
 
 const bannerFields = [
   { name: 'title', label: 'Banner Header', required: true },
-  { name: 'imageUrl', label: 'Image URL Asset', required: true, fullWidth: true },
+  { name: 'imageUrl', label: 'Image URL Asset', type: 'image', required: true, fullWidth: true },
   { name: 'link', label: 'Destination Click Path', fullWidth: true },
   { name: 'position', label: 'Display Spot', type: 'select', defaultValue: 'homepage', options: [{ value: 'homepage', label: 'Homepage Slider' }, { value: 'popup', label: 'Popup modal' }] },
   { name: 'status', label: 'Status', type: 'select', defaultValue: 'PUBLISHED', options: [{ value: 'PUBLISHED', label: 'PUBLISHED' }, { value: 'DRAFT', label: 'DRAFT' }] },
@@ -168,7 +168,7 @@ const bannerFields = [
 const adFields = [
   { name: 'title', label: 'Advertisement Description Title', required: true },
   { name: 'type', label: 'Banner / Ads Type', type: 'select', defaultValue: 'banner', options: [{ value: 'banner', label: 'Banner Image' }, { value: 'native', label: 'Native script code' }] },
-  { name: 'imageUrl', label: 'Asset Image URL Link', fullWidth: true },
+  { name: 'imageUrl', label: 'Asset Image URL Link', type: 'image', fullWidth: true },
   { name: 'link', label: 'Ad Redirection link', fullWidth: true },
   { name: 'position', label: 'Position Slot', type: 'select', defaultValue: 'sidebar', options: [{ value: 'sidebar', label: 'Sidebar Widget' }, { value: 'in_content', label: 'In-Content block' }] },
   { name: 'status', label: 'Status', type: 'select', defaultValue: 'PUBLISHED', options: [{ value: 'PUBLISHED', label: 'PUBLISHED' }, { value: 'DRAFT', label: 'DRAFT' }] },

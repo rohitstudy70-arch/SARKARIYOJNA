@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Save, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Save, Sparkles, Image as ImageIcon, Upload } from 'lucide-react';
 import api from '../../utils/api';
 
 export default function SchemeForm() {
@@ -100,6 +100,30 @@ export default function SchemeForm() {
     
     if (name === 'images' && value.startsWith('http')) {
       setImagePreview(value.split(',')[0].trim());
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const uploadData = new FormData();
+    uploadData.append('image', file);
+
+    try {
+      setSaveMsg('Uploading image, please wait...');
+      const res = await api.post('/api/v1/admin/upload', uploadData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      if (res.data.success && res.data.url) {
+        setFormData(prev => ({ ...prev, images: res.data.url }));
+        setImagePreview(res.data.url);
+        setSaveMsg('Image uploaded successfully!');
+        setTimeout(() => setSaveMsg(''), 3000);
+      }
+    } catch (err) {
+      console.error('Failed to upload image:', err);
+      setSaveMsg('Image upload failed: ' + (err.response?.data?.error || err.message));
     }
   };
 
@@ -289,10 +313,25 @@ export default function SchemeForm() {
               value={formData.images}
               onChange={handleChange}
               placeholder="https://example.com/yojana-image.jpg"
-              className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-white font-semibold transition"
+              className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 text-white font-semibold transition mb-3"
             />
-            <p className="text-[10px] text-slate-500 font-medium mt-2 leading-relaxed">
-              💡 Provide direct photo URL. Support multiple links split by comma.
+            
+            <div className="flex items-center gap-3">
+              <label className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-md uppercase tracking-wider">
+                <Upload size={12} />
+                Upload Image File
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+              <span className="text-[10px] text-slate-400 font-medium">Or choose a file from your device</span>
+            </div>
+
+            <p className="text-[10px] text-slate-500 font-medium mt-3 leading-relaxed">
+              💡 Provide direct photo URL, or upload from your computer to save locally on the server.
             </p>
           </div>
           <div>
