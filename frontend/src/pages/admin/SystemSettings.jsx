@@ -274,6 +274,42 @@ export default function SystemSettings() {
                 <option value="false">❌ Hidden (Hide)</option>
               </select>
             </div>
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Home Menu Item</label>
+              <select
+                name="showNavHome"
+                value={settings.showNavHome !== undefined ? settings.showNavHome : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Contact Menu Item</label>
+              <select
+                name="showNavContact"
+                value={settings.showNavContact !== undefined ? settings.showNavContact : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Admin Portal Button</label>
+              <select
+                name="showNavAdmin"
+                value={settings.showNavAdmin !== undefined ? settings.showNavAdmin : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
           </div>
         </div>
 

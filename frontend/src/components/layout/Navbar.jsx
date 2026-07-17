@@ -15,7 +15,10 @@ export default function Navbar() {
     showNavResults: true,
     showNavAdmitCards: true,
     showNavNews: true,
-    showNavBlogs: true
+    showNavBlogs: true,
+    showNavHome: true,
+    showNavContact: true,
+    showNavAdmin: true
   });
 
   // Fetch visibility settings from backend
@@ -29,7 +32,10 @@ export default function Navbar() {
           showNavResults: data.showNavResults !== 'false',
           showNavAdmitCards: data.showNavAdmitCards !== 'false',
           showNavNews: data.showNavNews !== 'false',
-          showNavBlogs: data.showNavBlogs !== 'false'
+          showNavBlogs: data.showNavBlogs !== 'false',
+          showNavHome: data.showNavHome !== 'false',
+          showNavContact: data.showNavContact !== 'false',
+          showNavAdmin: data.showNavAdmin !== 'false'
         });
       })
       .catch(err => {
@@ -74,7 +80,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
-            <NavLink to="/" className={activeStyle}>{t('home')}</NavLink>
+            {navSettings.showNavHome && <NavLink to="/" className={activeStyle}>{t('home')}</NavLink>}
             {navSettings.showNavSchemes && <NavLink to="/schemes" className={activeStyle}>{language === 'en' ? 'Schemes' : 'योजनाएं'}</NavLink>}
             {navSettings.showNavJobs && <NavLink to="/jobs" className={activeStyle}>{t('latestJobs')}</NavLink>}
             {navSettings.showNavResults && <NavLink to="/results" className={activeStyle}>{t('results')}</NavLink>}
@@ -94,16 +100,20 @@ export default function Navbar() {
               {language === 'en' ? 'हिन्दी (Hindi)' : 'English'}
             </button>
 
-            <Link to="/contact" className="text-sm font-medium text-gray-600 hover:text-blue-600 px-3 py-2">
-              {language === 'en' ? 'Contact' : 'संपर्क'}
-            </Link>
-            <Link 
-              to="/admin/login" 
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium text-sm px-4 py-2 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition shadow-sm hover:shadow flex items-center gap-1.5"
-            >
-              <User size={14} />
-              {language === 'en' ? 'Admin Portal' : 'एडमिन पोर्टल'}
-            </Link>
+            {navSettings.showNavContact && (
+              <Link to="/contact" className="text-sm font-medium text-gray-600 hover:text-blue-600 px-3 py-2">
+                {language === 'en' ? 'Contact' : 'संपर्क'}
+              </Link>
+            )}
+            {navSettings.showNavAdmin && (
+              <Link 
+                to="/admin/login" 
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium text-sm px-4 py-2 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition shadow-sm hover:shadow flex items-center gap-1.5"
+              >
+                <User size={14} />
+                {language === 'en' ? 'Admin Portal' : 'एडमिन पोर्टल'}
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -131,7 +141,7 @@ export default function Navbar() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white/95 border-b border-gray-100 px-4 pt-2 pb-6 space-y-2 animate-fade-in shadow-lg">
-          <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('home')}</Link>
+          {navSettings.showNavHome && <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('home')}</Link>}
           {navSettings.showNavSchemes && <Link to="/schemes" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Browse Schemes' : 'योजनाएं खोजें'}</Link>}
           {navSettings.showNavJobs && <Link to="/jobs" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('latestJobs')}</Link>}
           {navSettings.showNavResults && <Link to="/results" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('results')}</Link>}
@@ -139,14 +149,16 @@ export default function Navbar() {
           {navSettings.showNavNews && <Link to="/news" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Latest News' : 'समाचार'}</Link>}
           {navSettings.showNavBlogs && <Link to="/blogs" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Blogs' : 'ब्लॉग'}</Link>}
           <hr className="my-2 border-gray-100" />
-          <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Contact Us' : 'संपर्क करें'}</Link>
-          <Link 
-            to="/admin/login" 
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-3 rounded-xl bg-blue-600 text-white font-semibold text-center mt-4"
-          >
-            {language === 'en' ? 'Admin Portal' : 'एडमिन पोर्टल'}
-          </Link>
+          {navSettings.showNavContact && <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Contact Us' : 'संपर्क करें'}</Link>}
+          {navSettings.showNavAdmin && (
+            <Link 
+              to="/admin/login" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-3 rounded-xl bg-blue-600 text-white font-semibold text-center mt-4"
+            >
+              {language === 'en' ? 'Admin Portal' : 'एडमिन पोर्टल'}
+            </Link>
+          )}
         </div>
       )}
     </header>
