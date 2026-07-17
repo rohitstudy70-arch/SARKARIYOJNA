@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Auth & Language Wrapper
@@ -9,42 +9,42 @@ import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 
-// Client Pages
-import Home from './pages/Home';
-import Schemes from './pages/Schemes';
-import SchemeDetails from './pages/SchemeDetails';
-import Categories from './pages/Categories';
-import CategoryDetail from './pages/CategoryDetail';
-import States from './pages/States';
-import StateDetail from './pages/StateDetail';
-import JobsList from './pages/JobsList';
-import JobDetail from './pages/JobDetail';
-import ResultsList from './pages/ResultsList';
-import ResultDetail from './pages/ResultDetail';
-import AdmitCardsList from './pages/AdmitCardsList';
-import AdmitCardDetail from './pages/AdmitCardDetail';
-import AnswerKeyDetail from './pages/AnswerKeyDetail';
-import SyllabusDetail from './pages/SyllabusDetail';
-import AdmissionDetail from './pages/AdmissionDetail';
-import DocumentDetail from './pages/DocumentDetail';
-import NewsList from './pages/NewsList';
-import NewsDetail from './pages/NewsDetail';
-import BlogsList from './pages/BlogsList';
-import BlogDetail from './pages/BlogDetail';
-import Contact from './pages/Contact';
-import About from './pages/About';
-import Privacy from './pages/Privacy';
-import Faq from './pages/Faq';
+// Client Pages (Lazy Loaded)
+const Home = lazy(() => import('./pages/Home'));
+const Schemes = lazy(() => import('./pages/Schemes'));
+const SchemeDetails = lazy(() => import('./pages/SchemeDetails'));
+const Categories = lazy(() => import('./pages/Categories'));
+const CategoryDetail = lazy(() => import('./pages/CategoryDetail'));
+const States = lazy(() => import('./pages/States'));
+const StateDetail = lazy(() => import('./pages/StateDetail'));
+const JobsList = lazy(() => import('./pages/JobsList'));
+const JobDetail = lazy(() => import('./pages/JobDetail'));
+const ResultsList = lazy(() => import('./pages/ResultsList'));
+const ResultDetail = lazy(() => import('./pages/ResultDetail'));
+const AdmitCardsList = lazy(() => import('./pages/AdmitCardsList'));
+const AdmitCardDetail = lazy(() => import('./pages/AdmitCardDetail'));
+const AnswerKeyDetail = lazy(() => import('./pages/AnswerKeyDetail'));
+const SyllabusDetail = lazy(() => import('./pages/SyllabusDetail'));
+const AdmissionDetail = lazy(() => import('./pages/AdmissionDetail'));
+const DocumentDetail = lazy(() => import('./pages/DocumentDetail'));
+const NewsList = lazy(() => import('./pages/NewsList'));
+const NewsDetail = lazy(() => import('./pages/NewsDetail'));
+const BlogsList = lazy(() => import('./pages/BlogsList'));
+const BlogDetail = lazy(() => import('./pages/BlogDetail'));
+const Contact = lazy(() => import('./pages/Contact'));
+const About = lazy(() => import('./pages/About'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Faq = lazy(() => import('./pages/Faq'));
 
-// Admin Pages
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminLayout from './pages/admin/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import SchemeManager from './pages/admin/SchemeManager';
-import SchemeForm from './pages/admin/SchemeForm';
-import ModelManager from './pages/admin/ModelManager';
-import SystemSettings from './pages/admin/SystemSettings';
-import FeedbackList from './pages/admin/FeedbackList';
+// Admin Pages (Lazy Loaded)
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const SchemeManager = lazy(() => import('./pages/admin/SchemeManager'));
+const SchemeForm = lazy(() => import('./pages/admin/SchemeForm'));
+const ModelManager = lazy(() => import('./pages/admin/ModelManager'));
+const SystemSettings = lazy(() => import('./pages/admin/SystemSettings'));
+const FeedbackList = lazy(() => import('./pages/admin/FeedbackList'));
 
 // Layout wrappers
 function PublicLayout({ children }) {
@@ -176,76 +176,84 @@ const adFields = [
   { name: 'scriptCode', label: 'Raw HTML/Script code (Google Ads)', type: 'textarea', rows: 4 }
 ];
 
+const PageLoader = () => (
+  <div className="min-h-[60vh] flex items-center justify-center bg-[#fafafa]">
+    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+  </div>
+);
+
 export default function App() {
   return (
     <LanguageProvider>
       <AuthProvider>
         <Router>
-          <Routes>
-            
-            {/* Public Views */}
-            <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-            <Route path="/schemes" element={<PublicLayout><Schemes /></PublicLayout>} />
-            <Route path="/yojana/:slug" element={<PublicLayout><SchemeDetails /></PublicLayout>} />
-            
-            <Route path="/categories" element={<PublicLayout><Categories /></PublicLayout>} />
-            <Route path="/category/:slug" element={<PublicLayout><CategoryDetail /></PublicLayout>} />
-            
-            <Route path="/states" element={<PublicLayout><States /></PublicLayout>} />
-            <Route path="/state/:slug" element={<PublicLayout><StateDetail /></PublicLayout>} />
-            
-            <Route path="/jobs" element={<PublicLayout><JobsList /></PublicLayout>} />
-            <Route path="/jobs/:slug" element={<PublicLayout><JobDetail /></PublicLayout>} />
-            
-            <Route path="/results" element={<PublicLayout><ResultsList /></PublicLayout>} />
-            <Route path="/results/:slug" element={<PublicLayout><ResultDetail /></PublicLayout>} />
-            
-            <Route path="/admit-cards" element={<PublicLayout><AdmitCardsList /></PublicLayout>} />
-            <Route path="/admit-cards/:slug" element={<PublicLayout><AdmitCardDetail /></PublicLayout>} />
-            
-            <Route path="/news" element={<PublicLayout><NewsList /></PublicLayout>} />
-            <Route path="/news/:slug" element={<PublicLayout><NewsDetail /></PublicLayout>} />
-            
-            <Route path="/blogs" element={<PublicLayout><BlogsList /></PublicLayout>} />
-            <Route path="/blogs/:slug" element={<PublicLayout><BlogDetail /></PublicLayout>} />
-            
-            <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
-            <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
-            <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
-            <Route path="/faqs" element={<PublicLayout><Faq /></PublicLayout>} />
-            <Route path="/feedback" element={<PublicLayout><Contact /></PublicLayout>} />
-
-            {/* Admin Authentication */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-
-            {/* Admin Panel Layout & Operations */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route path="dashboard" element={<AdminDashboard />} />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
               
-              <Route path="schemes" element={<SchemeManager />} />
-              <Route path="schemes/new" element={<SchemeForm />} />
-              <Route path="schemes/edit/:id" element={<SchemeForm />} />
+              {/* Public Views */}
+              <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+              <Route path="/schemes" element={<PublicLayout><Schemes /></PublicLayout>} />
+              <Route path="/yojana/:slug" element={<PublicLayout><SchemeDetails /></PublicLayout>} />
               
-              <Route path="categories" element={<ModelManager modelName="categories" title="Category" fields={categoryFields} />} />
-              <Route path="states" element={<ModelManager modelName="states" title="State" fields={stateFields} />} />
-              <Route path="jobs" element={<ModelManager modelName="jobs" title="Job Vacancy" fields={jobFields} />} />
-              <Route path="results" element={<ModelManager modelName="results" title="Exam Result" fields={resultFields} />} />
-              <Route path="admit-cards" element={<ModelManager modelName="admit-cards" title="Admit Card" fields={admitCardFields} />} />
-              <Route path="answer-keys" element={<ModelManager modelName="answer-keys" title="Answer Key" fields={answerKeyFields} />} />
-              <Route path="syllabus" element={<ModelManager modelName="syllabus" title="Syllabus" fields={syllabusFields} />} />
-              <Route path="admissions" element={<ModelManager modelName="admissions" title="Admission" fields={admissionFields} />} />
-              <Route path="documents" element={<ModelManager modelName="documents" title="Document / Verification" fields={documentFields} />} />
-              <Route path="news" element={<ModelManager modelName="news" title="News Alert" fields={standardPostFields} />} />
-              <Route path="blogs" element={<ModelManager modelName="blogs" title="Blog Column" fields={standardPostFields} />} />
-              <Route path="faqs" element={<ModelManager modelName="faqs" title="FAQ Q&A" fields={standardPostFields} />} />
+              <Route path="/categories" element={<PublicLayout><Categories /></PublicLayout>} />
+              <Route path="/category/:slug" element={<PublicLayout><CategoryDetail /></PublicLayout>} />
               
-              <Route path="banners" element={<ModelManager modelName="banners" title="Homepage Banner" fields={bannerFields} />} />
-              <Route path="advertisements" element={<ModelManager modelName="advertisements" title="Ad Placement" fields={adFields} />} />
-              <Route path="feedback" element={<FeedbackList />} />
-              <Route path="settings" element={<SystemSettings />} />
-            </Route>
+              <Route path="/states" element={<PublicLayout><States /></PublicLayout>} />
+              <Route path="/state/:slug" element={<PublicLayout><StateDetail /></PublicLayout>} />
+              
+              <Route path="/jobs" element={<PublicLayout><JobsList /></PublicLayout>} />
+              <Route path="/jobs/:slug" element={<PublicLayout><JobDetail /></PublicLayout>} />
+              
+              <Route path="/results" element={<PublicLayout><ResultsList /></PublicLayout>} />
+              <Route path="/results/:slug" element={<PublicLayout><ResultDetail /></PublicLayout>} />
+              
+              <Route path="/admit-cards" element={<PublicLayout><AdmitCardsList /></PublicLayout>} />
+              <Route path="/admit-cards/:slug" element={<PublicLayout><AdmitCardDetail /></PublicLayout>} />
+              
+              <Route path="/news" element={<PublicLayout><NewsList /></PublicLayout>} />
+              <Route path="/news/:slug" element={<PublicLayout><NewsDetail /></PublicLayout>} />
+              
+              <Route path="/blogs" element={<PublicLayout><BlogsList /></PublicLayout>} />
+              <Route path="/blogs/:slug" element={<PublicLayout><BlogDetail /></PublicLayout>} />
+              
+              <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
+              <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
+              <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
+              <Route path="/faqs" element={<PublicLayout><Faq /></PublicLayout>} />
+              <Route path="/feedback" element={<PublicLayout><Contact /></PublicLayout>} />
 
-          </Routes>
+              {/* Admin Authentication */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+
+              {/* Admin Panel Layout & Operations */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route path="dashboard" element={<AdminDashboard />} />
+                
+                <Route path="schemes" element={<SchemeManager />} />
+                <Route path="schemes/new" element={<SchemeForm />} />
+                <Route path="schemes/edit/:id" element={<SchemeForm />} />
+                
+                <Route path="categories" element={<ModelManager modelName="categories" title="Category" fields={categoryFields} />} />
+                <Route path="states" element={<ModelManager modelName="states" title="State" fields={stateFields} />} />
+                <Route path="jobs" element={<ModelManager modelName="jobs" title="Job Vacancy" fields={jobFields} />} />
+                <Route path="results" element={<ModelManager modelName="results" title="Exam Result" fields={resultFields} />} />
+                <Route path="admit-cards" element={<ModelManager modelName="admit-cards" title="Admit Card" fields={admitCardFields} />} />
+                <Route path="answer-keys" element={<ModelManager modelName="answer-keys" title="Answer Key" fields={answerKeyFields} />} />
+                <Route path="syllabus" element={<ModelManager modelName="syllabus" title="Syllabus" fields={syllabusFields} />} />
+                <Route path="admissions" element={<ModelManager modelName="admissions" title="Admission" fields={admissionFields} />} />
+                <Route path="documents" element={<ModelManager modelName="documents" title="Document / Verification" fields={documentFields} />} />
+                <Route path="news" element={<ModelManager modelName="news" title="News Alert" fields={standardPostFields} />} />
+                <Route path="blogs" element={<ModelManager modelName="blogs" title="Blog Column" fields={standardPostFields} />} />
+                <Route path="faqs" element={<ModelManager modelName="faqs" title="FAQ Q&A" fields={standardPostFields} />} />
+                
+                <Route path="banners" element={<ModelManager modelName="banners" title="Homepage Banner" fields={bannerFields} />} />
+                <Route path="advertisements" element={<ModelManager modelName="advertisements" title="Ad Placement" fields={adFields} />} />
+                <Route path="feedback" element={<FeedbackList />} />
+                <Route path="settings" element={<SystemSettings />} />
+              </Route>
+
+            </Routes>
+          </Suspense>
         </Router>
       </AuthProvider>
     </LanguageProvider>

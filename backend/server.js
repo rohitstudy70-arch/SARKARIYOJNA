@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 const connectDB = require('./config/db');
 
 const path = require('path');
@@ -12,9 +13,13 @@ const app = express();
 connectDB();
 
 // Middlewares
+app.use(compression());
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+  maxAge: '1y',
+  etag: true
+}));
 
 // Routes
 app.use('/api/v1/auth', require('./routes/auth'));
