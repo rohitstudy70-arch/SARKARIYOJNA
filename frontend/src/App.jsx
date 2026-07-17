@@ -178,69 +178,6 @@ const adFields = [
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          
-          {/* Public Views */}
-          <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-          <Route path="/schemes" element={<PublicLayout><Schemes /></PublicLayout>} />
-          <Route path="/yojana/:slug" element={<PublicLayout><SchemeDetails /></PublicLayout>} />
-          
-          <Route path="/categories" element={<PublicLayout><Categories /></PublicLayout>} />
-          <Route path="/category/:slug" element={<PublicLayout><CategoryDetail /></PublicLayout>} />
-          
-          <Route path="/states" element={<PublicLayout><States /></PublicLayout>} />
-          <Route path="/state/:slug" element={<PublicLayout><StateDetail /></PublicLayout>} />
-          
-          <Route path="/jobs" element={<PublicLayout><JobsList /></PublicLayout>} />
-          <Route path="/jobs/:slug" element={<PublicLayout><JobDetail /></PublicLayout>} />
-          
-          <Route path="/results" element={<PublicLayout><ResultsList /></PublicLayout>} />
-          <Route path="/results/:slug" element={<PublicLayout><ResultDetail /></PublicLayout>} />
-          
-          <Route path="/admit-cards" element={<PublicLayout><AdmitCardsList /></PublicLayout>} />
-          <Route path="/admit-cards/:slug" element={<PublicLayout><AdmitCardDetail /></PublicLayout>} />
-          
-          <Route path="/news" element={<PublicLayout><NewsList /></PublicLayout>} />
-          <Route path="/news/:slug" element={<PublicLayout><NewsDetail /></PublicLayout>} />
-          
-          <Route path="/blogs" element={<PublicLayout><BlogsList /></PublicLayout>} />
-          <Route path="/blogs/:slug" element={<PublicLayout><BlogDetail /></PublicLayout>} />
-          
-          <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
-          <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
-          <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
-          <Route path="/faqs" element={<PublicLayout><Faq /></PublicLayout>} />
-          <Route path="/feedback" element={<PublicLayout><Contact /></PublicLayout>} />
-
-          {/* Admin Authentication */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-
-          {/* Admin Panel Layout & Operations */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="dashboard" element={<AdminDashboard />} />
-            
-            <Route path="schemes" element={<SchemeManager />} />
-            <Route path="schemes/new" element={<SchemeForm />} />
-            <Route path="schemes/edit/:id" element={<SchemeForm />} />
-            
-            <Route path="categories" element={<ModelManager modelName="categories" title="Category" fields={categoryFields} />} />
-            <Route path="states" element={<ModelManager modelName="states" title="State" fields={stateFields} />} />
-            <Route path="jobs" element={<ModelManager modelName="jobs" title="Job Vacancy" fields={jobFields} />} />
-            <Route path="results" element={<ModelManager modelName="results" title="Exam Result" fields={resultFields} />} />
-            <Route path="admit-cards" element={<ModelManager modelName="admit-cards" title="Admit Card" fields={admitCardFields} />} />
-            <Route path="answer-keys" element={<ModelManager modelName="answer-keys" title="Answer Key" fields={answerKeyFields} />} />
-            <Route path="syllabus" element={<ModelManager modelName="syllabus" title="Syllabus" fields={syllabusFields} />} />
-            <Route path="admissions" element={<ModelManager modelName="admissions" title="Admission" fields={admissionFields} />} />
-            <Route path="documents" element={<ModelManager modelName="documents" title="Document / Verification" fields={documentFields} />} />
-            <Route path="news" element={<ModelManager modelName="news" title="News Alert" fields={standardPostFields} />} />
-            <Route path="blogs" element={<ModelManager modelName="blogs" title="Blog Column" fields={standardPostFields} />} />
-            <Route path="faqs" element={<ModelManager modelName="faqs" title="FAQ Q&A" fields={standardPostFields} />} />
-            
-            <Route path="banners" element={<ModelManager modelName="banners" title="Homepage Banner" fields={bannerFields} />} />
-            <Route path="advertisements" element={<ModelManager modelName="advertisements" title="Ad Placement" fields={adFields} />} />
-            <Route path="feedback" element={<FeedbackList />} />
     <LanguageProvider>
       <AuthProvider>
         <Router>
