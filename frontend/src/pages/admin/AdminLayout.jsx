@@ -12,6 +12,7 @@ import {
 export default function AdminLayout() {
   const { admin, token, loading, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
   if (loading) {
     return (
@@ -43,6 +44,7 @@ export default function AdminLayout() {
   const navItem = (to, icon, label) => (
     <NavLink 
       to={to} 
+      onClick={() => setSidebarOpen(false)}
       className={({ isActive }) => 
         `flex items-center gap-3 px-4 py-2.5 rounded-xl font-semibold text-xs transition ${
           isActive 
@@ -62,17 +64,27 @@ export default function AdminLayout() {
       {/* Sidebar Navigation */}
       <aside className="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0">
         <div className="p-6">
-          <div className="flex items-center gap-3 pb-6 border-b border-slate-800 mb-6">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-extrabold text-lg">
-              SY
+          <div className="flex items-center justify-between pb-6 border-b border-slate-800 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-extrabold text-lg">
+                SY
+              </div>
+              <div>
+                <span className="font-extrabold text-sm text-white tracking-tight">Console Center</span>
+                <p className="text-[10px] text-slate-500 font-medium">Logged: Admin</p>
+              </div>
             </div>
-            <div>
-              <span className="font-extrabold text-sm text-white tracking-tight">Console Center</span>
-              <p className="text-[10px] text-slate-500 font-medium">Logged: Admin</p>
-            </div>
+            
+            {/* Toggle button shown only on mobile */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="md:hidden bg-slate-800 text-slate-300 px-3 py-1.5 rounded-xl text-[10px] font-extrabold uppercase tracking-wider"
+            >
+              {sidebarOpen ? 'Close Menu ▲' : 'Open Menu ▼'}
+            </button>
           </div>
 
-          <nav className="space-y-1">
+          <nav className={`space-y-1 ${sidebarOpen ? 'block' : 'hidden md:block'}`}>
             {navItem('/admin/dashboard', <LayoutDashboard size={16} />, 'Dashboard')}
             {navItem('/admin/schemes', <FileText size={16} />, 'Manage Schemes')}
             {navItem('/admin/categories', <FolderPlus size={16} />, 'Categories')}
@@ -103,7 +115,7 @@ export default function AdminLayout() {
         </div>
 
         {/* Footer actions inside Sidebar */}
-        <div className="p-4 border-t border-slate-800 space-y-2">
+        <div className={`p-4 border-t border-slate-800 space-y-2 ${sidebarOpen ? 'block' : 'hidden md:block'}`}>
           <Link to="/" className="flex items-center justify-center gap-1.5 w-full bg-slate-800 text-slate-300 font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-700 transition">
             <ArrowLeft size={12} />
             View Public Site
