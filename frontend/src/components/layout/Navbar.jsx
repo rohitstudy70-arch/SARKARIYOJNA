@@ -3,11 +3,39 @@ import { Link, NavLink } from 'react-router-dom';
 import { Search, ChevronDown, Menu, X, Globe, User, BookOpen } from 'lucide-react';
 import { gsap } from 'gsap';
 import { LanguageContext } from '../../context/LanguageContext';
+import api from '../../utils/api';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const navRef = useRef(null);
   const { language, toggleLanguage, t } = useContext(LanguageContext);
+  const [navSettings, setNavSettings] = React.useState({
+    showNavSchemes: true,
+    showNavJobs: true,
+    showNavResults: true,
+    showNavAdmitCards: true,
+    showNavNews: true,
+    showNavBlogs: true
+  });
+
+  // Fetch visibility settings from backend
+  useEffect(() => {
+    api.get('/api/v1/public/settings')
+      .then(res => {
+        const data = res.data || {};
+        setNavSettings({
+          showNavSchemes: data.showNavSchemes !== 'false',
+          showNavJobs: data.showNavJobs !== 'false',
+          showNavResults: data.showNavResults !== 'false',
+          showNavAdmitCards: data.showNavAdmitCards !== 'false',
+          showNavNews: data.showNavNews !== 'false',
+          showNavBlogs: data.showNavBlogs !== 'false'
+        });
+      })
+      .catch(err => {
+        console.error('Failed to load nav visibility settings:', err);
+      });
+  }, []);
 
   // GSAP animation on component mount
   useEffect(() => {
@@ -47,12 +75,12 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
             <NavLink to="/" className={activeStyle}>{t('home')}</NavLink>
-            <NavLink to="/schemes" className={activeStyle}>{language === 'en' ? 'Schemes' : 'योजनाएं'}</NavLink>
-            <NavLink to="/jobs" className={activeStyle}>{t('latestJobs')}</NavLink>
-            <NavLink to="/results" className={activeStyle}>{t('results')}</NavLink>
-            <NavLink to="/admit-cards" className={activeStyle}>{t('admitCards')}</NavLink>
-            <NavLink to="/news" className={activeStyle}>{language === 'en' ? 'News' : 'समाचार'}</NavLink>
-            <NavLink to="/blogs" className={activeStyle}>{language === 'en' ? 'Blogs' : 'ब्लॉग'}</NavLink>
+            {navSettings.showNavSchemes && <NavLink to="/schemes" className={activeStyle}>{language === 'en' ? 'Schemes' : 'योजनाएं'}</NavLink>}
+            {navSettings.showNavJobs && <NavLink to="/jobs" className={activeStyle}>{t('latestJobs')}</NavLink>}
+            {navSettings.showNavResults && <NavLink to="/results" className={activeStyle}>{t('results')}</NavLink>}
+            {navSettings.showNavAdmitCards && <NavLink to="/admit-cards" className={activeStyle}>{t('admitCards')}</NavLink>}
+            {navSettings.showNavNews && <NavLink to="/news" className={activeStyle}>{language === 'en' ? 'News' : 'समाचार'}</NavLink>}
+            {navSettings.showNavBlogs && <NavLink to="/blogs" className={activeStyle}>{language === 'en' ? 'Blogs' : 'ब्लॉग'}</NavLink>}
           </nav>
 
           {/* Right actions */}
@@ -104,12 +132,12 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white/95 border-b border-gray-100 px-4 pt-2 pb-6 space-y-2 animate-fade-in shadow-lg">
           <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('home')}</Link>
-          <Link to="/schemes" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Browse Schemes' : 'योजनाएं खोजें'}</Link>
-          <Link to="/jobs" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('latestJobs')}</Link>
-          <Link to="/results" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('results')}</Link>
-          <Link to="/admit-cards" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('admitCards')}</Link>
-          <Link to="/news" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Latest News' : 'समाचार'}</Link>
-          <Link to="/blogs" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Blogs' : 'ब्लॉग'}</Link>
+          {navSettings.showNavSchemes && <Link to="/schemes" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Browse Schemes' : 'योजनाएं खोजें'}</Link>}
+          {navSettings.showNavJobs && <Link to="/jobs" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('latestJobs')}</Link>}
+          {navSettings.showNavResults && <Link to="/results" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('results')}</Link>}
+          {navSettings.showNavAdmitCards && <Link to="/admit-cards" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{t('admitCards')}</Link>}
+          {navSettings.showNavNews && <Link to="/news" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Latest News' : 'समाचार'}</Link>}
+          {navSettings.showNavBlogs && <Link to="/blogs" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Blogs' : 'ब्लॉग'}</Link>}
           <hr className="my-2 border-gray-100" />
           <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2.5 rounded-xl hover:bg-blue-50 text-gray-700 font-semibold">{language === 'en' ? 'Contact Us' : 'संपर्क करें'}</Link>
           <Link 

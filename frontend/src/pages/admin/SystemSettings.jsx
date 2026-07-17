@@ -195,6 +195,88 @@ export default function SystemSettings() {
           </div>
         </div>
 
+        {/* Navigation visibility controls */}
+        <div className="space-y-4">
+          <h3 className="text-xs font-bold text-amber-405 uppercase tracking-wider pb-2 border-b border-slate-850">
+            Header Navigation Menu Visibility
+          </h3>
+          <p className="text-slate-400 text-xs">Choose which navigation links are visible on the website header navbar.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Schemes Menu Item</label>
+              <select
+                name="showNavSchemes"
+                value={settings.showNavSchemes !== undefined ? settings.showNavSchemes : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Govt Jobs Menu Item</label>
+              <select
+                name="showNavJobs"
+                value={settings.showNavJobs !== undefined ? settings.showNavJobs : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Exam Results Menu Item</label>
+              <select
+                name="showNavResults"
+                value={settings.showNavResults !== undefined ? settings.showNavResults : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Admit Cards Menu Item</label>
+              <select
+                name="showNavAdmitCards"
+                value={settings.showNavAdmitCards !== undefined ? settings.showNavAdmitCards : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Latest News Menu Item</label>
+              <select
+                name="showNavNews"
+                value={settings.showNavNews !== undefined ? settings.showNavNews : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Blogs Menu Item</label>
+              <select
+                name="showNavBlogs"
+                value={settings.showNavBlogs !== undefined ? settings.showNavBlogs : 'true'}
+                onChange={handleChange}
+                className="w-full bg-slate-950 border border-slate-850 focus:border-blue-500 rounded-xl px-4 py-3 text-sm focus:outline-none text-white font-semibold"
+              >
+                <option value="true">✅ Visible (Show)</option>
+                <option value="false">❌ Hidden (Hide)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div className="flex justify-end pt-6 border-t border-slate-850">
           <button
             type="submit"
