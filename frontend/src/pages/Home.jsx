@@ -2,7 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Flame, Award, Eye, ArrowRight, ArrowUpRight, AwardIcon } from 'lucide-react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import api from '../utils/api';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const [data, setData] = useState({
@@ -56,6 +59,67 @@ export default function Home() {
         { scale: 0.95, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.5, stagger: 0.06, ease: 'power3.out' },
         '-=0.2'
+      );
+
+      // ScrollTrigger scroll animations
+      gsap.fromTo('.trending-section-col',
+        { x: -50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: '.trending-section-col',
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+      
+      gsap.fromTo('.popular-section-col',
+        { x: 50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: '.popular-section-col',
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+
+      gsap.fromTo('.naukri-grid-col',
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.naukri-grid-col',
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+
+      gsap.fromTo('.state-badge-item',
+        { scale: 0.9, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.03,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.state-badge-item',
+            start: 'top 90%',
+            toggleActions: 'play none none none'
+          }
+        }
       );
     }
   }, [loading]);
@@ -302,7 +366,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 grid grid-cols-1 lg:grid-cols-2 gap-12">
         
         {/* Trending Column */}
-        <div>
+        <div className="trending-section-col">
           <h2 className="text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2 mb-6">
             <Flame className="text-orange-500" fill="orange" size={20} />
             Trending Schemes
@@ -329,7 +393,7 @@ export default function Home() {
         </div>
 
         {/* Popular Column */}
-        <div>
+        <div className="popular-section-col">
           <h2 className="text-xl font-bold text-gray-900 tracking-tight flex items-center gap-2 mb-6">
             <Award className="text-blue-500" size={20} />
             Popular Initiatives
@@ -369,7 +433,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
           {/* Column 1: Latest Jobs */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px]">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
               <span>Latest Jobs</span>
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">New</span>
@@ -393,7 +457,7 @@ export default function Home() {
           </div>
 
           {/* Column 2: Admit Cards */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px]">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-purple-600 to-violet-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
               <span>Admit Cards</span>
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Out</span>
@@ -417,7 +481,7 @@ export default function Home() {
           </div>
 
           {/* Column 3: Results */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px]">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
               <span>Results</span>
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Live</span>
@@ -441,7 +505,7 @@ export default function Home() {
           </div>
 
           {/* Column 4: Answer Keys */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px]">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-amber-600 to-orange-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
               <span>Answer Keys</span>
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Keys</span>
@@ -465,7 +529,7 @@ export default function Home() {
           </div>
 
           {/* Column 5: Syllabus */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px]">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-teal-600 to-cyan-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
               <span>Syllabus</span>
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Exam</span>
@@ -489,7 +553,7 @@ export default function Home() {
           </div>
 
           {/* Column 6: Admissions */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px]">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-rose-600 to-pink-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
               <span>Admissions</span>
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Apply</span>
@@ -513,7 +577,7 @@ export default function Home() {
           </div>
 
           {/* Column 7: Document Verification */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px]">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-indigo-600 to-blue-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
               <span>Certificates</span>
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Docs</span>
@@ -537,7 +601,7 @@ export default function Home() {
           </div>
 
           {/* Column 8: Important Alerts */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px]">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[480px] naukri-grid-col">
             <div className="bg-gradient-to-r from-red-600 to-rose-600 px-5 py-4 text-white font-bold flex justify-between items-center text-xs sm:text-sm">
               <span>Important Notices</span>
               <span className="bg-white/20 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-extrabold tracking-wider">Alert</span>
@@ -579,7 +643,7 @@ export default function Home() {
               <Link 
                 key={st._id} 
                 to={`/state/${st.slug}`} 
-                className="bg-white/10 hover:bg-white text-white hover:text-slate-900 font-semibold px-4 py-2 rounded-xl text-xs transition duration-200 border border-white/10 hover:border-transparent"
+                className="bg-white/10 hover:bg-white text-white hover:text-slate-900 font-semibold px-4 py-2 rounded-xl text-xs transition duration-200 border border-white/10 hover:border-transparent state-badge-item"
               >
                 {st.name} {st.hindiName ? `(${st.hindiName})` : ''}
               </Link>
